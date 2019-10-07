@@ -16,8 +16,8 @@
 #
 
 FROM adoptopenjdk/openjdk8:jdk8u191-b12
-
-ENV DOCKER_VERSION 1.12.0
+RUN "date"
+ENV DOCKER_VERSION 19.03.1
 ENV WHISK_CLI_VERSION latest
 ENV WHISKDEPLOY_CLI_VERSION latest
 
@@ -40,15 +40,14 @@ RUN pip install ansible==2.5.2 && \
     pip install docker
 
 # Install docker client
-RUN wget --no-verbose https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz && \
+RUN curl -sSL -o docker-${DOCKER_VERSION}.tgz https://download.docker.com/linux/static/stable/aarch64/docker-${DOCKER_VERSION}.tgz && \
   tar --strip-components 1 -xvzf docker-${DOCKER_VERSION}.tgz -C /usr/bin docker/docker && \
   rm -f docker-${DOCKER_VERSION}.tgz && \
   chmod +x /usr/bin/docker
-
 # # Install `wsk` cli in /usr/local/bin
-RUN wget -q https://github.com/apache/openwhisk-cli/releases/download/$WHISK_CLI_VERSION/OpenWhisk_CLI-$WHISK_CLI_VERSION-linux-amd64.tgz && \
-  tar xzf OpenWhisk_CLI-$WHISK_CLI_VERSION-linux-amd64.tgz -C /usr/local/bin wsk && \
-  rm OpenWhisk_CLI-$WHISK_CLI_VERSION-linux-amd64.tgz
+RUN wget -q https://github.com/apache/openwhisk-cli/releases/download/$WHISK_CLI_VERSION/OpenWhisk_CLI-$WHISK_CLI_VERSION-linux-arm64.tgz && \
+  tar xzf OpenWhisk_CLI-$WHISK_CLI_VERSION-linux-arm64.tgz -C /usr/local/bin wsk && \
+  rm OpenWhisk_CLI-$WHISK_CLI_VERSION-linux-arm64.tgz
 
 COPY wskutil.py /bin
 COPY wskprop.py /bin
