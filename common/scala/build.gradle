@@ -114,4 +114,8 @@ configurations {
 
 tasks.withType(ScalaCompile) {
     scalaCompileOptions.additionalParameters = gradle.scala.compileFlags
+    scalaCompileOptions.forkOptions.with {
+        memoryMaximumSize = '1g'
+        jvmArgs = ['-Xmx2G','-Xms2G','-Xss2m']
+    }
 }
